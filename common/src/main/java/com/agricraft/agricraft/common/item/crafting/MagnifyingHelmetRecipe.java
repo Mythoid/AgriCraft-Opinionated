@@ -2,12 +2,14 @@ package com.agricraft.agricraft.common.item.crafting;
 
 import com.agricraft.agricraft.common.registry.ModItems;
 import com.agricraft.agricraft.common.registry.ModRecipeSerializers;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -20,8 +22,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public class MagnifyingHelmetRecipe extends CustomRecipe {
 
-	public MagnifyingHelmetRecipe(ResourceLocation id, CraftingBookCategory category) {
-		super(id, category);
+	public MagnifyingHelmetRecipe(CraftingBookCategory category) {
+		super(category);
 	}
 
 	@Override
@@ -30,7 +32,7 @@ public class MagnifyingHelmetRecipe extends CustomRecipe {
 		boolean glass = false;
 		for (int i = 0; i < container.getContainerSize(); i++) {
 			ItemStack itemStack = container.getItem(i);
-			if (itemStack.getItem() instanceof ArmorItem armorItem && armorItem.getEquipmentSlot() == EquipmentSlot.HEAD && (itemStack.getTag() == null || !itemStack.getTag().getBoolean("magnifying"))) {
+			if (itemStack.getItem() instanceof ArmorItem armorItem && armorItem.getEquipmentSlot() == EquipmentSlot.HEAD && (!itemStack.has(DataComponents.CUSTOM_DATA) || !itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getBoolean("magnifying"))) {
 				if (helmet) {
 					return false;
 				} else {
@@ -49,7 +51,7 @@ public class MagnifyingHelmetRecipe extends CustomRecipe {
 
 	@NotNull
 	@Override
-	public ItemStack assemble(CraftingContainer container, RegistryAccess registryAccess) {
+	public ItemStack assemble(CraftingContainer container, HolderLookup.Provider registries) {
 		ItemStack helmet = null;
 		ItemStack glass = null;
 		for (int i = 0; i < container.getContainerSize(); i++) {
@@ -62,7 +64,9 @@ public class MagnifyingHelmetRecipe extends CustomRecipe {
 		}
 		if (helmet != null && glass != null) {
 			ItemStack copy = helmet.copy();
-			copy.getOrCreateTag().putBoolean("magnifying", true);
+			CompoundTag tag = copy.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+			tag.putBoolean("magnifying", true);
+			copy.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
 			return copy;
 		}
 		return ItemStack.EMPTY;

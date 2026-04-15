@@ -18,6 +18,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -92,7 +93,6 @@ public class CropBlock extends Block implements EntityBlock, BonemealableBlock, 
 				.randomTicks()
 				.noOcclusion()
 				.forceSolidOff()
-				.noParticlesOnBreak()
 				.lightLevel(blockState -> blockState.getValue(LIGHT))
 				.sound(SoundType.CROP));
 		this.registerDefaultState(this.stateDefinition.any().setValue(SimpleFluidloggedBlock.LAVALOGGED, false)
@@ -127,7 +127,7 @@ public class CropBlock extends Block implements EntityBlock, BonemealableBlock, 
 			if (cropState.hasSticks()) {
 				variant.playSound(level, pos);
 			} else {
-				SoundType sound = Blocks.WHEAT.getSoundType(Blocks.WHEAT.defaultBlockState());
+				SoundType sound = SoundType.CROP;
 				level.playSound(null, pos, sound.getPlaceSound(), SoundSource.BLOCKS, (sound.getVolume() + 1.0F) / 2.0F, sound.getPitch() * 0.8F);
 			}
 			return InteractionResult.SUCCESS;
@@ -241,10 +241,10 @@ public class CropBlock extends Block implements EntityBlock, BonemealableBlock, 
 
 	@Override
 	@NotNull
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	public ItemInteractionResult useItemOn(ItemStack heldItem, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		Optional<AgriCrop> optional = AgriApi.getCrop(level, pos);
 		if (optional.isEmpty()) {
-			return InteractionResult.FAIL;
+			return ItemInteractionResult.FAIL;
 		}
 		AgriCrop crop = optional.get();
 		// TODO: @Ketheroth future: run plant pre logic
@@ -252,7 +252,7 @@ public class CropBlock extends Block implements EntityBlock, BonemealableBlock, 
 		if (crop.hasPlant()) {
 			Optional<InteractionResult> result = crop.getPlant().onRightClickPre(crop, player.getItemInHand(hand), player);
 			if (result.isPresent()) {
-				return result.get();
+				return ItemInteractionResult.sidedSuccess(level.isClientSide());
 			}
 		}
 		// crop logic
@@ -261,10 +261,13 @@ public class CropBlock extends Block implements EntityBlock, BonemealableBlock, 
 		if (crop.hasPlant()) {
 			Optional<InteractionResult> override = crop.getPlant().onRightClickPost(crop, player.getItemInHand(hand), player);
 			if (override.isPresent()) {
-				return override.get();
+				return ItemInteractionResult.sidedSuccess(level.isClientSide());
 			}
 		}
-		return result;
+		if (result == InteractionResult.PASS) {
+			return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+		}
+		return result.consumesAction() ? ItemInteractionResult.sidedSuccess(level.isClientSide()) : ItemInteractionResult.FAIL;
 	}
 
 	protected InteractionResult rightClickLogic(ItemStack heldItem, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, AgriCrop crop) {
@@ -332,7 +335,7 @@ public class CropBlock extends Block implements EntityBlock, BonemealableBlock, 
 
 	@Override
 	@NotNull
-	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
 		if (level.getBlockEntity(pos) instanceof AgriCrop crop) {
 			if (crop.hasPlant()) {
 				// prioritize the plant if there is any
@@ -375,7 +378,7 @@ public class CropBlock extends Block implements EntityBlock, BonemealableBlock, 
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClient) {
+	public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
 		return AgriApi.getCrop(level, pos).map(crop -> crop.hasPlant() && crop.isFertile() && !crop.isFullyGrown()).orElse(false);
 	}
 

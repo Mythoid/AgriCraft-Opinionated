@@ -149,15 +149,21 @@ public class FabricPlatform extends Platform {
 
 	@Override
 	public <T extends AbstractContainerMenu> MenuType<T> createMenuType(Platform.MenuFactory<T> factory) {
-		return new ExtendedScreenHandlerType<>(factory::create);
+		return new ExtendedScreenHandlerType<>((syncId, inventory, pos) -> {
+			FriendlyByteBuf buf = new FriendlyByteBuf(io.netty.buffer.Unpooled.buffer());
+			buf.writeBlockPos(pos);
+			return factory.create(syncId, inventory, buf);
+		}, BlockPos.STREAM_CODEC);
 	}
 
 	@Override
 	public void openMenu(ServerPlayer player, ExtraDataMenuProvider provider) {
-		player.openMenu(new ExtendedScreenHandlerFactory() {
+		player.openMenu(new ExtendedScreenHandlerFactory<BlockPos>() {
 			@Override
-			public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf buf) {
+			public BlockPos getScreenOpeningData(ServerPlayer player) {
+				FriendlyByteBuf buf = new FriendlyByteBuf(io.netty.buffer.Unpooled.buffer());
 				provider.writeExtraData(player, buf);
+				return buf.readBlockPos();
 			}
 
 			@Override

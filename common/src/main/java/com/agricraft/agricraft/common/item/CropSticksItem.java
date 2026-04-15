@@ -21,7 +21,9 @@ public class CropSticksItem extends BlockItem {
 	private final CropStickVariant variant;
 
 	public CropSticksItem(Block block, CropStickVariant variant) {
-		super(block, new Item.Properties());
+		super(block, variant == CropStickVariant.IRON || variant == CropStickVariant.OBSIDIAN
+				? new Item.Properties().fireResistant()
+				: new Item.Properties());
 		this.variant = variant;
 	}
 
@@ -61,16 +63,6 @@ public class CropSticksItem extends BlockItem {
 	@Override
 	public String getDescriptionId() {
 		return "item.agricraft." + variant.getSerializedName() + "_crop_sticks";
-	}
-
-	@Override
-	public boolean isFireResistant() {
-		return this.variant == CropStickVariant.IRON || this.variant == CropStickVariant.OBSIDIAN;
-	}
-
-	@Override
-	public boolean canBeHurtBy(DamageSource damageSource) {
-		return !this.isFireResistant() || !damageSource.is(DamageTypeTags.IS_FIRE);
 	}
 
 }

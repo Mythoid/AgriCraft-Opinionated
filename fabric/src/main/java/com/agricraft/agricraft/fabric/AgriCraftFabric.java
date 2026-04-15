@@ -4,7 +4,6 @@ import com.agricraft.agricraft.AgriCraft;
 import com.agricraft.agricraft.api.AgriApi;
 import com.agricraft.agricraft.api.codecs.AgriMutation;
 import com.agricraft.agricraft.api.codecs.AgriSoil;
-import com.agricraft.agricraft.api.config.CompatConfig;
 import com.agricraft.agricraft.api.config.CoreConfig;
 import com.agricraft.agricraft.api.fertilizer.AgriFertilizer;
 import com.agricraft.agricraft.api.plant.AgriPlant;
@@ -13,11 +12,9 @@ import com.agricraft.agricraft.common.commands.DumpRegistriesCommand;
 import com.agricraft.agricraft.common.commands.GiveSeedCommand;
 import com.agricraft.agricraft.common.handler.DenyBonemeal;
 import com.agricraft.agricraft.common.handler.VanillaSeedConversion;
-import com.agricraft.agricraft.common.plugin.BotaniaFabricPlugin;
 import com.agricraft.agricraft.common.plugin.FabricSeasonPlugin;
 import com.agricraft.agricraft.common.util.Platform;
 import com.agricraft.agricraft.common.util.fabric.FabricPlatform;
-import com.agricraft.agricraft.compat.botania.ManaGrowthCondition;
 import com.agricraft.agricraft.plugin.minecraft.MinecraftPlugin;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -30,9 +27,6 @@ import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.InteractionResult;
-import vazkii.botania.api.mana.ManaBlockType;
-import vazkii.botania.api.mana.ManaNetworkAction;
-import vazkii.botania.api.mana.ManaNetworkCallback;
 
 public class AgriCraftFabric implements ModInitializer {
 
@@ -77,14 +71,6 @@ public class AgriCraftFabric implements ModInitializer {
 				}
 			}
 		});
-		if (FabricLoader.getInstance().isModLoaded("botania") && CompatConfig.enableBotania) {
-			BotaniaFabricPlugin.init();
-			ManaNetworkCallback.EVENT.register((manaReceiver, manaBlockType, manaNetworkAction) -> {
-				if (manaNetworkAction == ManaNetworkAction.REMOVE && manaBlockType == ManaBlockType.POOL) {
-					ManaGrowthCondition.removePoll(manaReceiver);
-				}
-			});
-		}
 	}
 
 }

@@ -8,6 +8,7 @@ import com.agricraft.agricraft.common.registry.ModBlockEntityTypes;
 import com.agricraft.agricraft.common.util.ExtraDataMenuProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -45,33 +46,33 @@ public class SeedAnalyzerBlockEntity extends BlockEntity implements WorldlyConta
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
+	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+		super.loadAdditional(tag, registries);
 		if (tag.contains("journal")) {
-			ItemStack journal = ItemStack.of(tag.getCompound("journal"));
+			ItemStack journal = ItemStack.parseOptional(registries, tag.getCompound("journal"));
 			this.inventory.setItem(JOURNAL_SLOT, journal);
 		}
 		if (tag.contains("seed")) {
-			ItemStack seed = ItemStack.of(tag.getCompound("seed"));
+			ItemStack seed = ItemStack.parseOptional(registries, tag.getCompound("seed"));
 			this.inventory.setItem(SEED_SLOT, seed);
 		}
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
+	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+		super.saveAdditional(tag, registries);
 		if (hasJournal()) {
-			tag.put("journal", getJournal().save(new CompoundTag()));
+			tag.put("journal", getJournal().save(registries));
 		}
 		if (hasSeed()) {
-			tag.put("seed", getSeed().save(new CompoundTag()));
+			tag.put("seed", getSeed().save(registries));
 		}
 	}
 
 	@NotNull
 	@Override
-	public CompoundTag getUpdateTag() {
-		return this.saveWithoutMetadata();
+	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+		return this.saveWithoutMetadata(registries);
 	}
 
 	@Nullable

@@ -34,7 +34,7 @@ public class CropClippingRecipe implements EmiRecipe {
 		input = List.of(EmiStack.of(AgriSeedItem.toStack(plant)).comparison(AgriCraftEmiPlugin.compareSeeds()));
 		this.plant = plant;
 		output = new ArrayList<>();
-		plant.getAllPossibleClipProducts(product -> output.add(EmiStack.of(product).comparison(Comparison.compareNbt())));
+		plant.getAllPossibleClipProducts(product -> output.add(EmiStack.of(product).comparison(Comparison.compareComponents())));
 	}
 
 	@Override

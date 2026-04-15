@@ -7,14 +7,32 @@ import com.agricraft.agricraft.common.block.entity.SeedAnalyzerBlockEntity;
 import com.agricraft.agricraft.common.item.AgriSeedItem;
 import com.agricraft.agricraft.common.item.JournalItem;
 import com.agricraft.agricraft.common.registry.ModMenus;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Optional;
@@ -122,7 +140,7 @@ public class SeedAnalyzerMenu extends AbstractContainerMenu {
 		if (seed.isEmpty()) {
 			return Optional.empty();
 		}
-		AgriGenome genome = AgriGenome.fromNBT(seed.getTag());
+		AgriGenome genome = AgriGenome.fromNBT(seed.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag());
 		return Optional.ofNullable(genome);
 	}
 

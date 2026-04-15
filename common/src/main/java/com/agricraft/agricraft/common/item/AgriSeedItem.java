@@ -9,14 +9,17 @@ import com.agricraft.agricraft.common.block.entity.SeedAnalyzerBlockEntity;
 import com.agricraft.agricraft.common.registry.ModBlocks;
 import com.agricraft.agricraft.common.registry.ModItems;
 import com.agricraft.agricraft.common.util.LangUtils;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -43,7 +46,7 @@ public class AgriSeedItem extends BlockItem implements AgriGenomeProviderItem {
 		AgriGenome genome = new AgriGenome(plant);
 		CompoundTag tag = new CompoundTag();
 		genome.writeToNBT(tag);
-		stack.setTag(tag);
+		stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
 		return stack;
 	}
 
@@ -57,7 +60,7 @@ public class AgriSeedItem extends BlockItem implements AgriGenomeProviderItem {
 		ItemStack stack = new ItemStack(ModItems.SEED.get(), 1);
 		CompoundTag tag = new CompoundTag();
 		genome.writeToNBT(tag);
-		stack.setTag(tag);
+		stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
 		return stack;
 	}
 
@@ -71,10 +74,10 @@ public class AgriSeedItem extends BlockItem implements AgriGenomeProviderItem {
 		if (stack.getItem() != ModItems.SEED.get()) {
 			return "agricraft:unknown";
 		}
-		CompoundTag tag = stack.getTag();
-		if (tag == null) {
+		if (!stack.has(DataComponents.CUSTOM_DATA)) {
 			return "agricraft:unknown";
 		}
+		CompoundTag tag = stack.get(DataComponents.CUSTOM_DATA).copyTag();
 		AgriGenome genome = AgriGenome.fromNBT(tag);
 		if (genome == null) {
 			return "agricraft:unknown";
@@ -84,10 +87,10 @@ public class AgriSeedItem extends BlockItem implements AgriGenomeProviderItem {
 
 	@Override
 	public Component getName(ItemStack stack) {
-		if (stack.getTag() == null) {
+		if (!stack.has(DataComponents.CUSTOM_DATA)) {
 			return Component.translatable("seed.agricraft.agricraft.unknown");
 		}
-		AgriGenome genome = AgriGenome.fromNBT(stack.getTag());
+		AgriGenome genome = AgriGenome.fromNBT(stack.get(DataComponents.CUSTOM_DATA).copyTag());
 		if (genome == null) {
 			return Component.translatable("seed.agricraft.agricraft.unknown");
 		}
@@ -100,8 +103,8 @@ public class AgriSeedItem extends BlockItem implements AgriGenomeProviderItem {
 		Level level = context.getLevel();
 		if (result.consumesAction() && !level.isClientSide) {
 			AgriApi.getCrop(level, context.getClickedPos()).ifPresent(crop -> {
-				CompoundTag tag = context.getItemInHand().getTag();
-				if (tag != null) {
+				if (context.getItemInHand().has(DataComponents.CUSTOM_DATA)) {
+					CompoundTag tag = context.getItemInHand().get(DataComponents.CUSTOM_DATA).copyTag();
 					crop.plantGenome(AgriGenome.fromNBT(tag));
 				}
 			});
@@ -148,16 +151,18 @@ public class AgriSeedItem extends BlockItem implements AgriGenomeProviderItem {
 	}
 
 	private void plantSeed(Player player, AgriCrop crop, ItemStack seed) {
-		crop.plantGenome(AgriGenome.fromNBT(seed.getTag()), player);
+		if (seed.has(DataComponents.CUSTOM_DATA)) {
+			crop.plantGenome(AgriGenome.fromNBT(seed.get(DataComponents.CUSTOM_DATA).copyTag()), player);
+		}
 		if (player != null && !player.isCreative()) {
 			seed.shrink(1);
 		}
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
-		CompoundTag tag = stack.getTag();
-		if (tag != null) {
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
+		if (stack.has(DataComponents.CUSTOM_DATA)) {
+			CompoundTag tag = stack.get(DataComponents.CUSTOM_DATA).copyTag();
 			AgriGenome genome = AgriGenome.fromNBT(tag);
 			if (genome != null) {
 				genome.appendHoverText(tooltipComponents, isAdvanced);

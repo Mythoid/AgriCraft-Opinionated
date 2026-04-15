@@ -11,10 +11,12 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.Comparison;
 import dev.emi.emi.api.stack.EmiStack;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
 
 import java.util.ArrayList;
 
@@ -31,12 +33,14 @@ public class AgriCraftEmiPlugin implements EmiPlugin {
 	public static final EmiRecipeCategory REQUIREMENT_CATEGORY = new EmiRecipeCategory(new ResourceLocation("agricraft", "requirement"), FARMLAND);
 
 	public static final Comparison COMPARE_SEEDS = Comparison.compareData(stack -> {
-		var genome = AgriGenome.fromNBT(stack.getNbt());
-		if (genome != null) {
-			return genome.getSpeciesGene().getDominant().trait();
-		} else {
-			return "unknown";
+		ItemStack itemStack = stack.getItemStack();
+		if (itemStack.has(DataComponents.CUSTOM_DATA)) {
+			var genome = AgriGenome.fromNBT(itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag());
+			if (genome != null) {
+				return genome.getSpeciesGene().getDominant().trait();
+			}
 		}
+		return "unknown";
 	});
 
 	public static Comparison compareSeeds() {
@@ -54,7 +58,7 @@ public class AgriCraftEmiPlugin implements EmiPlugin {
 		registry.addWorkstation(MUTATION_CATEGORY, EmiStack.of(ModItems.IRON_CROP_STICKS.get()));
 		registry.addWorkstation(MUTATION_CATEGORY, EmiStack.of(ModItems.OBSIDIAN_CROP_STICKS.get()));
 
-		EmiStack normalSeed = EmiStack.of(ModItems.SEED.get()).comparison(Comparison.compareNbt());
+		EmiStack normalSeed = EmiStack.of(ModItems.SEED.get()).comparison(Comparison.compareComponents());
 		registry.removeEmiStacks(normalSeed);
 		AgriApi.getMutationRegistry().ifPresent(mutations -> mutations.entrySet().forEach(entry -> registry.addRecipe(new CropMutationRecipe(prefixedId(entry.getKey(), "mutations"), entry.getValue()))));
 

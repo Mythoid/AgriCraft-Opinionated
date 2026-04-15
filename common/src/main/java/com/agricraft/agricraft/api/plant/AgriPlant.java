@@ -10,16 +10,38 @@ import com.agricraft.agricraft.api.genetic.AgriGenome;
 import com.agricraft.agricraft.common.util.Platform;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.util.RandomSource;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.Item;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -143,7 +165,7 @@ public class AgriPlant {
 			Platform.get().getItemsFromLocation(product.item()).forEach(item -> {
 				ItemStack itemStack = new ItemStack(item, product.min());
 				if (!product.nbt().isEmpty()) {
-					itemStack.getOrCreateTag().merge(product.nbt());
+					itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().merge(product.nbt());
 				}
 				products.accept(itemStack);
 			});
@@ -158,7 +180,7 @@ public class AgriPlant {
 						Item item = possible.get(random.nextInt(possible.size()));
 						ItemStack itemStack = new ItemStack(item, product.getAmount(random));
 						if (!product.nbt().isEmpty()) {
-							itemStack.getOrCreateTag().merge(product.nbt());
+							itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().merge(product.nbt());
 						}
 						products.accept(itemStack);
 					});
@@ -180,7 +202,7 @@ public class AgriPlant {
 						Item item = possible.get(random.nextInt(possible.size()));
 						ItemStack itemStack = new ItemStack(item, product.getAmount(random));
 						if (!product.nbt().isEmpty()) {
-							itemStack.getOrCreateTag().merge(product.nbt());
+							itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().merge(product.nbt());
 						}
 						products.accept(itemStack);
 					});

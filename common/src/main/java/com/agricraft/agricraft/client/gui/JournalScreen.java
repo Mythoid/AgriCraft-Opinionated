@@ -48,7 +48,7 @@ public class JournalScreen extends Screen {
 
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-		this.renderBackground(guiGraphics);
+		this.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
 		super.render(guiGraphics, mouseX, mouseY, partialTick);
 		int journalX = (this.width - PAGE_WIDTH) / 2;
 		int journalY = (this.height - PAGE_HEIGHT) / 2;
@@ -61,18 +61,18 @@ public class JournalScreen extends Screen {
 	}
 
 	@Override
-	public void renderBackground(GuiGraphics guiGraphics) {
-		super.renderBackground(guiGraphics);
+	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+		super.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
 		int journalX = (this.width - PAGE_WIDTH) / 2;
 		int journalY = (this.height - PAGE_HEIGHT) / 2;
 		guiGraphics.blit(PAGE_BACKGROUND, journalX, journalY, 0, 0, PAGE_WIDTH, PAGE_HEIGHT, 292, 292);
 	}
 
 	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-		if (delta > 0) {
+	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+		if (scrollY > 0) {
 			this.previousPage();
-		} else if (delta < 0) {
+		} else if (scrollY < 0) {
 			this.nextPage();
 		}
 		return true;

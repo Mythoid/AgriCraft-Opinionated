@@ -15,8 +15,14 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -37,7 +43,7 @@ public class AgriCraftJeiPlugin implements IModPlugin {
 	public void registerItemSubtypes(ISubtypeRegistration registration) {
 		// Register all The Seeds.
 		registration.registerSubtypeInterpreter(ModItems.SEED.get(), (stack, context) -> {
-			AgriGenome genome = AgriGenome.fromNBT(stack.getTag());
+			AgriGenome genome = AgriGenome.fromNBT(stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag());
 			if (genome != null) {
 				return genome.getSpeciesGene().getTrait();
 			}
@@ -47,7 +53,7 @@ public class AgriCraftJeiPlugin implements IModPlugin {
 
 	@Override
 	public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration registration) {
-		registration.getCraftingCategory().addCategoryExtension(MagnifyingHelmetRecipe.class, (recipe) -> new MagnifyingHelmetExtension());
+		// TODO: In JEI 18+, addCategoryExtension was removed. Need to use the new extension API.
 	}
 
 	@Override

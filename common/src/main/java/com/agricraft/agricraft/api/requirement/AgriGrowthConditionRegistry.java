@@ -46,7 +46,7 @@ public class AgriGrowthConditionRegistry extends AgriRegistry<AgriGrowthConditio
 	private final BaseGrowthCondition<Integer> light;
 	private final BaseGrowthCondition<BlockState> block;
 	private final BaseGrowthCondition<Holder<Biome>> biome;
-	private final BaseGrowthCondition<ResourceKey<DimensionType>> dimension;
+	private final BaseGrowthCondition<ResourceKey<Level>> dimension;
 	private final BaseGrowthCondition<AgriSeason> season;
 	private final BaseGrowthCondition<FluidState> fluid;
 
@@ -123,7 +123,7 @@ public class AgriGrowthConditionRegistry extends AgriRegistry<AgriGrowthConditio
 				}
 			}
 			return AgriGrowthResponse.FERTILE;
-		}, (level, blockPos) -> level.dimensionTypeId());
+		}, (level, blockPos) -> level.dimension());
 		season = new BaseGrowthCondition<>("season", (plant, strength, season) -> {
 			List<AgriSeason> seasons = plant.getGrowthRequirements().seasons();
 			if (!AgriApi.getSeasonLogic().isActive()
@@ -198,7 +198,7 @@ public class AgriGrowthConditionRegistry extends AgriRegistry<AgriGrowthConditio
 		return getInstance().biome;
 	}
 
-	public static BaseGrowthCondition<ResourceKey<DimensionType>> getDimension() {
+	public static BaseGrowthCondition<ResourceKey<Level>> getDimension() {
 		return getInstance().dimension;
 	}
 

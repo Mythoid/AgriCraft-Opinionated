@@ -1,0 +1,72 @@
+architectury {
+	platformSetupLoomIde()
+	neoForge()
+}
+
+base {
+	archivesName = "${mod_name}-${project.name}-${minecraft_version}"
+}
+
+loom {
+	accessWidenerPath = project(":common").loom.accessWidenerPath
+}
+
+sourceSets {
+	main {
+		resources {
+			srcDirs += project(":neoforge").file("src/generated/resources").absolutePath
+			exclude '.cache'
+		}
+		java {
+			// Exclude third-party mod compat plugins that don't have NeoForge 1.20.6 builds
+			exclude '**/plugin/industrialforegoing/**'
+			exclude '**/plugin/pneumaticcraft/**'
+			exclude '**/plugin/MysticalAgriculturePlugin.java'
+		}
+	}
+}
+
+configurations {
+	common
+	shadowCommon
+	compileClasspath.extendsFrom common
+	runtimeClasspath.extendsFrom common
+	developmentNeoForge.extendsFrom common
+}
+
+dependencies {
+	neoForge "net.neoforged:neoforge:$neoforge_version"
+
+	common(project(path: ":common", configuration: "namedElements")) { transitive false }
+	shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
+
+	modCompileOnly "mezz.jei:jei-$minecraft_version-neoforge-api:$jei_version"
+	modLocalRuntime("mezz.jei:jei-$minecraft_version-neoforge:$jei_version") { transitive = false }
+
+	modImplementation "curse.maven:jade-324717:$jade_forge_version"
+}
+
+shadowJar {
+	configurations = [project.configurations.shadowCommon]
+	archiveClassifier.set "dev-shadow"
+}
+
+remapJar {
+	input.set shadowJar.archiveFile
+	dependsOn shadowJar
+	archiveClassifier.set null
+	atAccessWideners.add "agricraft.accesswidener"
+}
+
+sourcesJar {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+	def commonSources = project(":common").sourcesJar
+	dependsOn commonSources
+	from commonSources.archiveFile.map { zipTree(it) }
+}
+
+components.java {
+	withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+		skip()
+	}
+}

@@ -84,7 +84,7 @@ public class MinecraftPlantModifiers {
 
 		@Override
 		public void onEntityCollision(AgriCrop crop, Entity entity) {
-			entity.setSecondsOnFire(((int) crop.getGenome().getStatGenes().stream().map(AgriGenePair::getTrait).mapToInt(i -> i).average().orElse(0.0)));
+			entity.igniteForSeconds(((int) crop.getGenome().getStatGenes().stream().map(AgriGenePair::getTrait).mapToInt(i -> i).average().orElse(0.0)));
 		}
 
 	}
@@ -134,7 +134,7 @@ public class MinecraftPlantModifiers {
 					|| stack.getItem() != Items.BONE_MEAL
 					|| crop.getLevel() == null
 					|| !crop.canBeHarvested()
-					|| !fungus.isValidBonemealTarget(level, crop.getBlockPos(), crop.getBlockState(), level.isClientSide)) {
+					|| !fungus.isValidBonemealTarget(level, crop.getBlockPos(), crop.getBlockState())) {
 				return Optional.empty();
 			}
 			if (fungus.isBonemealSuccess(level, level.random, crop.getBlockPos(), crop.getBlockState())) {
@@ -225,7 +225,7 @@ public class MinecraftPlantModifiers {
 					|| crop.getLevel() == null
 					|| !crop.canBeHarvested()
 					|| !(level instanceof ServerLevel serverLevel)
-					|| !sapling.isValidBonemealTarget(level, crop.getBlockPos(), crop.getBlockState(), level.isClientSide)) {
+					|| !sapling.isValidBonemealTarget(level, crop.getBlockPos(), crop.getBlockState())) {
 				return Optional.empty();
 			}
 			if (sapling.isBonemealSuccess(level, level.random, crop.getBlockPos(), crop.getBlockState())) {
@@ -233,12 +233,12 @@ public class MinecraftPlantModifiers {
 				if (state.hasProperty(SaplingBlock.STAGE)) { // for trees
 					state = state.setValue(SaplingBlock.STAGE, 1);
 				}
-				CompoundTag before = crop.asBlockEntity().saveWithoutMetadata();
+				CompoundTag before = crop.asBlockEntity().saveWithoutMetadata(level.registryAccess());
 				sapling.performBonemeal(serverLevel, serverLevel.getRandom(), crop.getBlockPos(), state);
 				if (serverLevel.getBlockState(crop.getBlockPos()).getBlock().equals(sapling)) {
 					// if we couldn't grow the tree, put back the crop instead of the sapling
 					serverLevel.setBlockAndUpdate(crop.getBlockPos(), crop.getBlockState());
-					serverLevel.getBlockEntity(crop.getBlockPos()).load(before);
+					serverLevel.getBlockEntity(crop.getBlockPos()).loadCustomOnly(before, serverLevel.registryAccess());
 					return Optional.of(InteractionResult.CONSUME);
 				}
 				serverLevel.levelEvent(2005, crop.getBlockPos(), 0);

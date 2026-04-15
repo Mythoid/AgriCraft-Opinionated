@@ -3,8 +3,10 @@ package com.agricraft.agricraft.common.item;
 import com.agricraft.agricraft.common.block.entity.CropBlockEntity;
 import com.agricraft.agricraft.common.block.entity.SeedAnalyzerBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
@@ -20,18 +22,18 @@ public class DebuggerItem extends Item {
 		BlockPos pos = context.getClickedPos();
 		System.out.println("side: " + (level.isClientSide?"client":"server"));
 		if (level.getBlockEntity(pos) instanceof SeedAnalyzerBlockEntity analyzer) {
-			System.out.println("  tag: " + analyzer.saveWithoutMetadata());
+			System.out.println("  tag: " + analyzer.saveWithoutMetadata(level.registryAccess()));
 			System.out.println("  hasSeed: " + analyzer.hasSeed());
 			if (analyzer.hasSeed()) {
-				System.out.println("    seed: " + analyzer.getSeed() + " " + analyzer.getSeed().getTag());
+				System.out.println("    seed: " + analyzer.getSeed() + " " + analyzer.getSeed().getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag());
 			}
 			System.out.println("  hasJournal: " + analyzer.hasJournal());
 			if (analyzer.hasJournal()) {
-				System.out.println("    journal: " + analyzer.getJournal() + " " + analyzer.getJournal().getTag());
+				System.out.println("    journal: " + analyzer.getJournal() + " " + analyzer.getJournal().getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag());
 			}
 		}
 		if (level.getBlockEntity(pos) instanceof CropBlockEntity crop) {
-			System.out.println("  tag: " + crop.saveWithoutMetadata());
+			System.out.println("  tag: " + crop.saveWithoutMetadata(level.registryAccess()));
 			System.out.println("  plant id: " + crop.getPlantId());
 			System.out.println("  plant: " + crop.getPlant());
 		}

@@ -26,7 +26,8 @@ public class MouseHandlerMixin {
 		}
 		ci.cancel();
 		SeedBagItem.changeSorter(player.getItemInHand(InteractionHand.MAIN_HAND), (int) this.accumulatedScroll);
-		int s = player.getItemInHand(InteractionHand.MAIN_HAND).getOrCreateTag().getInt("sorter");
+		net.minecraft.nbt.CompoundTag tag = player.getItemInHand(InteractionHand.MAIN_HAND).getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY).copyTag();
+		int s = tag.getInt("sorter");
 		String id = SeedBagItem.SORTERS.get(s).getId().toString().replace(":", ".");
 		player.displayClientMessage(Component.translatable("agricraft.tooltip.bag.sorter")
 				.append(Component.translatable("agricraft.tooltip.bag.sorter." + id)), true);

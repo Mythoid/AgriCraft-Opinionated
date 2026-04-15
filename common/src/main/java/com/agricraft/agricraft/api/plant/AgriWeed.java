@@ -8,9 +8,17 @@ import com.agricraft.agricraft.api.crop.AgriGrowthStage;
 import com.agricraft.agricraft.common.util.Platform;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.util.RandomSource;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.Item;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -94,7 +102,7 @@ public class AgriWeed {
 							Item item = possible.get(random.nextInt(possible.size()));
 							ItemStack itemStack = new ItemStack(item, product.getAmount(random));
 							if (!product.nbt().isEmpty()) {
-								itemStack.getOrCreateTag().merge(product.nbt());
+								itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().merge(product.nbt());
 							}
 							consumer.accept(itemStack);
 						});

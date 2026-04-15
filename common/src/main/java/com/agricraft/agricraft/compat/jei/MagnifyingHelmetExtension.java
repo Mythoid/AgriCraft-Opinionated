@@ -5,7 +5,11 @@ import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategoryExtension;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.Items;
 
 import java.util.List;
@@ -20,7 +24,7 @@ public class MagnifyingHelmetExtension implements ICraftingCategoryExtension {
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, ICraftingGridHelper craftingGridHelper, IFocusGroup focuses) {
 		List<ItemStack> helmetsOutput = HELMETS.stream().map(ItemStack::copy).toList();
-		helmetsOutput.forEach(h -> h.getOrCreateTag().putBoolean("magnifying", true));
+		helmetsOutput.forEach(h -> h.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().putBoolean("magnifying", true));
 		int width = getWidth();
 		int height = getHeight();
 		craftingGridHelper.createAndSetInputs(builder, List.of(HELMETS, List.of(ModItems.MAGNIFYING_GLASS.get().getDefaultInstance())), width, height);

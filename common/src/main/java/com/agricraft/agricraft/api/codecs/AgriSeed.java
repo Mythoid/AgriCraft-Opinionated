@@ -3,10 +3,20 @@ package com.agricraft.agricraft.api.codecs;
 import com.agricraft.agricraft.common.util.Platform;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.Item;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
@@ -41,7 +51,7 @@ public record AgriSeed(ExtraCodecs.TagOrElementLocation item, boolean overridePl
 			if (this.nbt.isEmpty()) {
 				return true;
 			}
-			CompoundTag tag = itemStack.getOrCreateTag();
+			CompoundTag tag = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
 			for (String key : this.nbt.getAllKeys()) {
 				if (!tag.contains(key) || !tag.get(key).equals(this.nbt.get(key))) {
 					return false;

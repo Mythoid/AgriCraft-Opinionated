@@ -1,19 +1,8 @@
 package com.agricraft.agricraft.api.config;
 
-import com.teamresourceful.resourcefulconfig.common.annotations.Config;
-import com.teamresourceful.resourcefulconfig.common.annotations.InlineCategory;
+import com.teamresourceful.resourcefulconfig.api.annotations.Config;
 
-@Config("agricraft")
+@Config(value = "agricraft", categories = {CoreConfig.class, StatsConfig.class, CompatConfig.class})
 public final class AgriCraftConfig {
-
-	@InlineCategory
-	public static CoreConfig core;
-
-	@InlineCategory
-	public static StatsConfig stats;
-
-
-	@InlineCategory
-	public static CompatConfig compat;
 
 }

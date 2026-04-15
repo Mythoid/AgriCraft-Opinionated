@@ -10,11 +10,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.gui.screens.inventory.tooltip.TooltipRenderUtil;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -44,8 +45,8 @@ public class MagnifyingGlassOverlay {
 		addAllowingPredicate(player -> player.getMainHandItem().is(ModItems.MAGNIFYING_GLASS.get()));
 		addAllowingPredicate(player -> player.getOffhandItem().is(ModItems.MAGNIFYING_GLASS.get()));
 		addAllowingPredicate(player -> {
-			CompoundTag tag = player.getItemBySlot(EquipmentSlot.HEAD).getTag();
-			return tag != null && tag.getBoolean("magnifying");
+			net.minecraft.world.item.ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD);
+			return helmet.has(DataComponents.CUSTOM_DATA) && helmet.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getBoolean("magnifying");
 		});
 
 		inspectors.add((level, player, hitResult) -> {
