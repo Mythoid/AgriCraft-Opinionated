@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MouseHandler.class)
 public class MouseHandlerMixin {
 
-	@Shadow private double accumulatedScroll;
+	@Shadow private double accumulatedScrollY;
 
 	@Inject(method = "onScroll(JDD)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Inventory;swapPaint(D)V"), cancellable = true)
 	private void onMouseScroll(long windowPointer, double xOffset, double yOffset, CallbackInfo ci) {
@@ -25,7 +25,7 @@ public class MouseHandlerMixin {
 			return;
 		}
 		ci.cancel();
-		SeedBagItem.changeSorter(player.getItemInHand(InteractionHand.MAIN_HAND), (int) this.accumulatedScroll);
+		SeedBagItem.changeSorter(player.getItemInHand(InteractionHand.MAIN_HAND), (int) this.accumulatedScrollY);
 		net.minecraft.nbt.CompoundTag tag = player.getItemInHand(InteractionHand.MAIN_HAND).getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY).copyTag();
 		int s = tag.getInt("sorter");
 		String id = SeedBagItem.SORTERS.get(s).getId().toString().replace(":", ".");
