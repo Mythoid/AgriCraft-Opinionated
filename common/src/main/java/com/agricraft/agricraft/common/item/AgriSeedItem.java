@@ -172,7 +172,7 @@ public class AgriSeedItem extends BlockItem implements AgriGenomeProviderItem {
 
 //	@Override
 //	public ItemStack getDefaultInstance() {
-//		return AgriApi.getPlant(new ResourceLocation("minecraft:wheat")).map(AgriSeedItem::toStack).orElse(super.getDefaultInstance());
+//		return AgriApi.getPlant(ResourceLocation.parse("minecraft:wheat")).map(AgriSeedItem::toStack).orElse(super.getDefaultInstance());
 //	}
 
 }

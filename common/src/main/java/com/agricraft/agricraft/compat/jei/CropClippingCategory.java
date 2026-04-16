@@ -24,11 +24,11 @@ import java.util.ArrayList;
 
 public class CropClippingCategory implements IRecipeCategory<AgriPlant> {
 
-	public static final ResourceLocation ID = new ResourceLocation(AgriApi.MOD_ID, "jei/clipping");
+	public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(AgriApi.MOD_ID, "jei/clipping");
 	public static final RecipeType<AgriPlant> TYPE = new RecipeType<>(ID, AgriPlant.class);
 
-	public static final IDrawable ICON = AgriCraftJeiPlugin.createDrawable(new ResourceLocation(AgriApi.MOD_ID, "textures/item/clipper.png"), 0, 0, 16, 16, 16, 16);
-	public static final IDrawable BACKGROUND = AgriCraftJeiPlugin.createDrawable(new ResourceLocation(AgriApi.MOD_ID, "textures/gui/jei/crop_produce.png"), 0, 0, 128, 128, 128, 128);
+	public static final IDrawable ICON = AgriCraftJeiPlugin.createDrawable(ResourceLocation.fromNamespaceAndPath(AgriApi.MOD_ID, "textures/item/clipper.png"), 0, 0, 16, 16, 16, 16);
+	public static final IDrawable BACKGROUND = AgriCraftJeiPlugin.createDrawable(ResourceLocation.fromNamespaceAndPath(AgriApi.MOD_ID, "textures/gui/jei/crop_produce.png"), 0, 0, 128, 128, 128, 128);
 
 	@Override
 	public RecipeType<AgriPlant> getRecipeType() {

@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class CropProduceRecipe implements EmiRecipe {
-	public static final EmiTexture BACKGROUND = new EmiTexture(new ResourceLocation(AgriApi.MOD_ID, "textures/gui/jei/crop_produce.png"), 0, 0, 128, 128, 128, 128, 128, 128);
+	public static final EmiTexture BACKGROUND = new EmiTexture(ResourceLocation.fromNamespaceAndPath(AgriApi.MOD_ID, "textures/gui/jei/crop_produce.png"), 0, 0, 128, 128, 128, 128, 128, 128);
 
 
 	private final ResourceLocation id;

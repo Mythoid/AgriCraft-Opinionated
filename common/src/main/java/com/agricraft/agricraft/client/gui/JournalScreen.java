@@ -15,7 +15,7 @@ import net.minecraft.sounds.SoundEvents;
 
 public class JournalScreen extends Screen {
 
-	private static final ResourceLocation PAGE_BACKGROUND = new ResourceLocation(AgriApi.MOD_ID, "textures/gui/journal/background.png");
+	private static final ResourceLocation PAGE_BACKGROUND = ResourceLocation.fromNamespaceAndPath(AgriApi.MOD_ID, "textures/gui/journal/background.png");
 	private static final int PAGE_WIDTH = 292;
 	private static final int PAGE_HEIGHT = 230;
 	private static final int OFFSET_LEFT_PAGE = 8;

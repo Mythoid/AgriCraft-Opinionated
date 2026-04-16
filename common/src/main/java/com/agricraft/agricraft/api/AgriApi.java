@@ -33,11 +33,11 @@ public final class AgriApi {
 
 	public static final String MOD_ID = "agricraft";
 
-	public static final ResourceKey<Registry<AgriPlant>> AGRIPLANTS = ResourceKey.createRegistryKey(new ResourceLocation(AgriApi.MOD_ID, "plants"));
-	public static final ResourceKey<Registry<AgriWeed>> AGRIWEEDS = ResourceKey.createRegistryKey(new ResourceLocation(AgriApi.MOD_ID, "weeds"));
-	public static final ResourceKey<Registry<AgriSoil>> AGRISOILS = ResourceKey.createRegistryKey(new ResourceLocation(AgriApi.MOD_ID, "soils"));
-	public static final ResourceKey<Registry<AgriMutation>> AGRIMUTATIONS = ResourceKey.createRegistryKey(new ResourceLocation(AgriApi.MOD_ID, "mutations"));
-	public static final ResourceKey<Registry<AgriFertilizer>> AGRIFERTILIZERS = ResourceKey.createRegistryKey(new ResourceLocation(AgriApi.MOD_ID, "fertilizers"));
+	public static final ResourceKey<Registry<AgriPlant>> AGRIPLANTS = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(AgriApi.MOD_ID, "plants"));
+	public static final ResourceKey<Registry<AgriWeed>> AGRIWEEDS = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(AgriApi.MOD_ID, "weeds"));
+	public static final ResourceKey<Registry<AgriSoil>> AGRISOILS = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(AgriApi.MOD_ID, "soils"));
+	public static final ResourceKey<Registry<AgriMutation>> AGRIMUTATIONS = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(AgriApi.MOD_ID, "mutations"));
+	public static final ResourceKey<Registry<AgriFertilizer>> AGRIFERTILIZERS = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(AgriApi.MOD_ID, "fertilizers"));
 
 	public static Optional<Registry<AgriPlant>> getPlantRegistry() {
 		return Platform.get().getRegistry(AGRIPLANTS);
@@ -56,7 +56,7 @@ public final class AgriApi {
 	}
 
 	public static Optional<AgriPlant> getPlant(String plantId) {
-		return AgriApi.getPlant(new ResourceLocation(plantId));
+		return AgriApi.getPlant(ResourceLocation.parse(plantId));
 	}
 
 	public static Optional<AgriPlant> getPlant(ResourceLocation plantId) {
@@ -64,7 +64,7 @@ public final class AgriApi {
 	}
 
 	public static Optional<AgriPlant> getPlant(String plantId, RegistryAccess registryAccess) {
-		return AgriApi.getPlant(new ResourceLocation(plantId), registryAccess);
+		return AgriApi.getPlant(ResourceLocation.parse(plantId), registryAccess);
 	}
 
 	public static Optional<AgriPlant> getPlant(ResourceLocation plantId, RegistryAccess registryAccess) {
@@ -80,7 +80,7 @@ public final class AgriApi {
 	}
 
 	public static Optional<AgriWeed> getWeed(String weedId) {
-		return AgriApi.getWeed(new ResourceLocation(weedId));
+		return AgriApi.getWeed(ResourceLocation.parse(weedId));
 	}
 
 	public static Optional<AgriWeed> getWeed(ResourceLocation weedId) {
@@ -88,7 +88,7 @@ public final class AgriApi {
 	}
 
 	public static Optional<AgriWeed> getWeed(String weedId, RegistryAccess registryAccess) {
-		return AgriApi.getWeed(new ResourceLocation(weedId), registryAccess);
+		return AgriApi.getWeed(ResourceLocation.parse(weedId), registryAccess);
 	}
 
 	public static Optional<AgriWeed> getWeed(ResourceLocation weedId, RegistryAccess registryAccess) {

@@ -58,28 +58,28 @@ public class AgriCraftFabricClient implements ClientModInitializer {
 		BuiltinItemRendererRegistry.INSTANCE.register(ModItems.SEED.get(), AgriSeedBEWLR.INSTANCE::renderByItem);
 		ModelLoadingPlugin.register(pluginContext -> {
 			for (Map.Entry<ResourceLocation, Resource> entry : FileToIdConverter.json("models/seed").listMatchingResources(Minecraft.getInstance().getResourceManager()).entrySet()) {
-				ResourceLocation seed = new ResourceLocation(entry.getKey().getNamespace(), entry.getKey().getPath().replace("models/seed", "seed").replace(".json", ""));
+				ResourceLocation seed = ResourceLocation.fromNamespaceAndPath(entry.getKey().getNamespace(), entry.getKey().getPath().replace("models/seed", "seed").replace(".json", ""));
 				pluginContext.addModels(seed);
 			}
 			for (Map.Entry<ResourceLocation, Resource> entry : FileToIdConverter.json("models/crop").listMatchingResources(Minecraft.getInstance().getResourceManager()).entrySet()) {
-				ResourceLocation crop = new ResourceLocation(entry.getKey().getNamespace(), entry.getKey().getPath().replace("models/crop", "crop").replace(".json", ""));
+				ResourceLocation crop = ResourceLocation.fromNamespaceAndPath(entry.getKey().getNamespace(), entry.getKey().getPath().replace("models/crop", "crop").replace(".json", ""));
 				pluginContext.addModels(crop);
 			}
 			for (Map.Entry<ResourceLocation, Resource> entry : FileToIdConverter.json("models/weed").listMatchingResources(Minecraft.getInstance().getResourceManager()).entrySet()) {
-				ResourceLocation crop = new ResourceLocation(entry.getKey().getNamespace(), entry.getKey().getPath().replace("models/weed", "weed").replace(".json", ""));
+				ResourceLocation crop = ResourceLocation.fromNamespaceAndPath(entry.getKey().getNamespace(), entry.getKey().getPath().replace("models/weed", "weed").replace(".json", ""));
 				pluginContext.addModels(crop);
 			}
 			// add the crop sticks models else they're not loaded
-			pluginContext.addModels(new ResourceLocation("agricraft:block/wooden_crop_sticks"), new ResourceLocation("agricraft:block/iron_crop_sticks"), new ResourceLocation("agricraft:block/obsidian_crop_sticks"),
-					new ResourceLocation("agricraft:block/wooden_cross_crop_sticks"), new ResourceLocation("agricraft:block/iron_cross_crop_sticks"), new ResourceLocation("agricraft:block/obsidian_cross_crop_sticks"));
+			pluginContext.addModels(ResourceLocation.parse("agricraft:block/wooden_crop_sticks"), ResourceLocation.parse("agricraft:block/iron_crop_sticks"), ResourceLocation.parse("agricraft:block/obsidian_crop_sticks"),
+					ResourceLocation.parse("agricraft:block/wooden_cross_crop_sticks"), ResourceLocation.parse("agricraft:block/iron_cross_crop_sticks"), ResourceLocation.parse("agricraft:block/obsidian_cross_crop_sticks"));
 		});
 
 		BlockEntityRenderers.register(ModBlockEntityTypes.CROP.get(), CropBlockEntityRenderer::new);
 		BlockEntityRenderers.register(ModBlockEntityTypes.SEED_ANALYZER.get(), SeedAnalyzerEntityRenderer::new);
 		MenuScreens.register(ModMenus.SEED_ANALYZER_MENU.get(), SeedAnalyzerScreen::new);
 
-		HudRenderCallback.EVENT.register((guiGraphics, partialTicks) -> {
-			MagnifyingGlassOverlay.renderOverlay(guiGraphics, partialTicks);
+		HudRenderCallback.EVENT.register((guiGraphics, deltaTracker) -> {
+			MagnifyingGlassOverlay.renderOverlay(guiGraphics, deltaTracker.getGameTimeDeltaPartialTick(false));
 		});
 		ItemTooltipCallback.EVENT.register((stack, tooltipContext, tooltipType, lines) -> {
 			if (stack.has(DataComponents.CUSTOM_DATA) && stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getBoolean("magnifying")) {

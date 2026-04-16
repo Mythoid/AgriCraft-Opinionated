@@ -63,10 +63,10 @@ public class AgriCraftFabric implements ModInitializer {
 				if (!modid.equals("agricraft") && !modid.equals("minecraft")) {
 					// deprecated methods are used to avoid using Fabric API internals
 					if (agricraft.findPath("datapacks/"+modid).isPresent()) {
-						ResourceManagerHelper.registerBuiltinResourcePack(new ResourceLocation("builtin", "agricraft_datapacks_" + modid), "datapacks/" + modid, agricraft, CoreConfig.enablePacksByDefault);
+						ResourceManagerHelper.registerBuiltinResourcePack(ResourceLocation.fromNamespaceAndPath("builtin", "agricraft_datapacks_" + modid), "datapacks/" + modid, agricraft, CoreConfig.enablePacksByDefault);
 					}
 					if (agricraft.findPath("resourcepacks/"+modid).isPresent()) {
-						ResourceManagerHelper.registerBuiltinResourcePack(new ResourceLocation("builtin", "agricraft_resourcepacks_" + modid), "resourcepacks/" + modid, agricraft, CoreConfig.enablePacksByDefault);
+						ResourceManagerHelper.registerBuiltinResourcePack(ResourceLocation.fromNamespaceAndPath("builtin", "agricraft_resourcepacks_" + modid), "resourcepacks/" + modid, agricraft, CoreConfig.enablePacksByDefault);
 					}
 				}
 			}

@@ -31,7 +31,7 @@ import java.util.ArrayList;
 @JeiPlugin
 public class AgriCraftJeiPlugin implements IModPlugin {
 
-	public static final ResourceLocation ID = new ResourceLocation(AgriApi.MOD_ID, "compat_jei");
+	public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(AgriApi.MOD_ID, "compat_jei");
 
 	@Override
 	@NotNull

@@ -107,7 +107,7 @@ public class JournalItem extends Item {
 	@Override
 	public ItemStack getDefaultInstance() {
 		ItemStack stack = new ItemStack(this);
-//		researchPlant(stack, new ResourceLocation("minecraft:wheat"));
+//		researchPlant(stack, ResourceLocation.parse("minecraft:wheat"));
 		return stack;
 	}
 
@@ -155,7 +155,7 @@ public class JournalItem extends Item {
 			if (tag != null && tag.contains("plants")) {
 				ListTag list = tag.getList("plants", Tag.TAG_STRING);
 				for (Tag plantTag : list) {
-					ResourceLocation plantId = new ResourceLocation(plantTag.getAsString());
+					ResourceLocation plantId = ResourceLocation.parse(plantTag.getAsString());
 					if (AgriApi.getPlant(plantId).isPresent()) {
 						plants.add(plantId);
 					}

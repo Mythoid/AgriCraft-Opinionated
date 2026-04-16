@@ -396,7 +396,14 @@ public class CropBlock extends Block implements EntityBlock, BonemealableBlock, 
 
 	@Override
 	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-		return AgriApi.getSoil(level, pos.below(), level.registryAccess()).isPresent();
+		if (AgriApi.getSoil(level, pos.below(), level.registryAccess()).isPresent()) {
+			return true;
+		}
+		// Crop sticks can keep the crop alive on any solid surface if the config option is enabled
+		if (CoreConfig.cropSticksPreventTrampling && state.getValue(CROP_STATE).hasSticks()) {
+			return level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP);
+		}
+		return false;
 	}
 
 	@Override

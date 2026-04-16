@@ -52,19 +52,19 @@ public class SoilsDatagen {
 	}
 
 	private static void r(BootstrapContext<AgriSoil> context, String modid, String soilId, AgriSoil soil) {
-		context.register(ResourceKey.create(AgriApi.AGRISOILS, new ResourceLocation(modid, soilId)), soil);
+		context.register(ResourceKey.create(AgriApi.AGRISOILS, ResourceLocation.fromNamespaceAndPath(modid, soilId)), soil);
 	}
 
 	private static void farmland(BootstrapContext<AgriSoil> context, String namespace, String soilId, double growthModifier) {
-		context.register(ResourceKey.create(AgriApi.AGRISOILS, new ResourceLocation(namespace, soilId)),
+		context.register(ResourceKey.create(AgriApi.AGRISOILS, ResourceLocation.fromNamespaceAndPath(namespace, soilId)),
 				AgriSoil.builder().variants(AgriSoilVariant.builder().block(namespace + ":" + soilId).build()).humidity(WET).acidity(SLIGHTLY_ACIDIC).nutrients(HIGH).growthModifier(growthModifier).build());
 	}
 
 	private static void mc(BootstrapContext<AgriSoil> context, String soilId, AgriSoil soil) {
-		context.register(ResourceKey.create(AgriApi.AGRISOILS, new ResourceLocation("minecraft", soilId)), soil);
+		context.register(ResourceKey.create(AgriApi.AGRISOILS, ResourceLocation.fromNamespaceAndPath("minecraft", soilId)), soil);
 	}
 
 	private static void agricraft(BootstrapContext<AgriSoil> context, String soilId, AgriSoil soil) {
-		context.register(ResourceKey.create(AgriApi.AGRISOILS, new ResourceLocation("agricraft", soilId)), soil);
+		context.register(ResourceKey.create(AgriApi.AGRISOILS, ResourceLocation.fromNamespaceAndPath("agricraft", soilId)), soil);
 	}
 }

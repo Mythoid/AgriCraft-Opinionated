@@ -5,6 +5,7 @@ import com.agricraft.agricraft.api.crop.AgriGrowthStage;
 import com.agricraft.agricraft.client.ClientUtil;
 import com.agricraft.agricraft.common.block.CropBlock;
 import com.agricraft.agricraft.common.block.entity.CropBlockEntity;
+import com.agricraft.agricraft.common.util.PlatformClient;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -31,11 +32,13 @@ public class CropBlockEntityRenderer implements BlockEntityRenderer<CropBlockEnt
 			if (blockEntity.isCrossCropSticks()) {
 				modelId = modelId.replace("crop", "cross_crop");
 			}
-			BakedModel model = Minecraft.getInstance().getModelManager().bakedRegistry.get(new ResourceLocation(modelId));
+			BakedModel model = PlatformClient.get().getStandaloneModel(ResourceLocation.parse(modelId));
 			// render the stick model
-			Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(poseStack.last(),
-					buffer.getBuffer(RenderType.cutoutMipped()),
-					blockEntity.getBlockState(), model, 1, 1, 1, packedLight, packedOverlay);
+			if (model != null) {
+				Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(poseStack.last(),
+						buffer.getBuffer(RenderType.cutoutMipped()),
+						blockEntity.getBlockState(), model, 1, 1, 1, packedLight, packedOverlay);
+			}
 		}
 		if (blockEntity.hasPlant()) {
 			AgriGrowthStage stage = blockEntity.getGrowthStage();
@@ -63,9 +66,11 @@ public class CropBlockEntityRenderer implements BlockEntityRenderer<CropBlockEnt
 			String weedId = blockEntity.getWeedId();
 			BakedModel weedModel = AgriClientApi.getWeedModel(weedId, weedStage.index());
 			// render the computed plant model
-			Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(poseStack.last(),
-					buffer.getBuffer(RenderType.cutoutMipped()),
-					blockEntity.getBlockState(), weedModel, 1, 1, 1, packedLight, packedOverlay);
+			if (weedModel != null) {
+				Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(poseStack.last(),
+						buffer.getBuffer(RenderType.cutoutMipped()),
+						blockEntity.getBlockState(), weedModel, 1, 1, 1, packedLight, packedOverlay);
+			}
 		}
 
 	}

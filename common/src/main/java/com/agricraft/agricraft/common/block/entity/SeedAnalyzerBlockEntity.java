@@ -115,7 +115,7 @@ public class SeedAnalyzerBlockEntity extends BlockEntity implements WorldlyConta
 	public ItemStack insertSeed(ItemStack seed) {
 		ItemStack stack = insertItem(SEED_SLOT, seed);
 		if (hasJournal() && stack.getCount() == 0) {
-			JournalItem.researchPlant(this.getJournal(), new ResourceLocation(AgriSeedItem.getSpecies(seed)));
+			JournalItem.researchPlant(this.getJournal(), ResourceLocation.parse(AgriSeedItem.getSpecies(seed)));
 		}
 		return stack;
 	}

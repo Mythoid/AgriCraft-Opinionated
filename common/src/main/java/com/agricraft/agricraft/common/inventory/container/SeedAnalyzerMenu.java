@@ -56,7 +56,7 @@ public class SeedAnalyzerMenu extends AbstractContainerMenu {
 				// Assuming we did in fact find an AgriCraft Seed, let's add it to the journal research!!
 				if (analyzer.hasJournal() && !agricraftSeed.isEmpty()) {
 					ItemStack journal = analyzer.getJournal();
-					JournalItem.researchPlant(journal, new ResourceLocation(AgriSeedItem.getSpecies(agricraftSeed)));
+					JournalItem.researchPlant(journal, ResourceLocation.parse(AgriSeedItem.getSpecies(agricraftSeed)));
 				}
 			}
 

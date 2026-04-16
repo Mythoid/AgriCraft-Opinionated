@@ -16,6 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
@@ -49,23 +50,23 @@ public class AgriCraftNeoForgeClient {
 	@SubscribeEvent
 	public static void loadModels(ModelEvent.RegisterAdditional event) {
 		for (Map.Entry<ResourceLocation, Resource> entry : FileToIdConverter.json("models/seed").listMatchingResources(Minecraft.getInstance().getResourceManager()).entrySet()) {
-			ResourceLocation seed = new ResourceLocation(entry.getKey().toString().replace("models/seed", "seed").replace(".json", ""));
-			event.register(seed);
+			ResourceLocation seed = ResourceLocation.parse(entry.getKey().toString().replace("models/seed", "seed").replace(".json", ""));
+			event.register(ModelResourceLocation.standalone(seed));
 		}
 		for (Map.Entry<ResourceLocation, Resource> entry : FileToIdConverter.json("models/crop").listMatchingResources(Minecraft.getInstance().getResourceManager()).entrySet()) {
-			ResourceLocation seed = new ResourceLocation(entry.getKey().toString().replace("models/crop", "crop").replace(".json", ""));
-			event.register(seed);
+			ResourceLocation seed = ResourceLocation.parse(entry.getKey().toString().replace("models/crop", "crop").replace(".json", ""));
+			event.register(ModelResourceLocation.standalone(seed));
 		}
 		for (Map.Entry<ResourceLocation, Resource> entry : FileToIdConverter.json("models/weed").listMatchingResources(Minecraft.getInstance().getResourceManager()).entrySet()) {
-			ResourceLocation seed = new ResourceLocation(entry.getKey().toString().replace("models/weed", "weed").replace(".json", ""));
-			event.register(seed);
+			ResourceLocation seed = ResourceLocation.parse(entry.getKey().toString().replace("models/weed", "weed").replace(".json", ""));
+			event.register(ModelResourceLocation.standalone(seed));
 		}
-		event.register(new ResourceLocation("agricraft:block/wooden_crop_sticks"));
-		event.register(new ResourceLocation("agricraft:block/iron_crop_sticks"));
-		event.register(new ResourceLocation("agricraft:block/obsidian_crop_sticks"));
-		event.register(new ResourceLocation("agricraft:block/wooden_cross_crop_sticks"));
-		event.register(new ResourceLocation("agricraft:block/iron_cross_crop_sticks"));
-		event.register(new ResourceLocation("agricraft:block/obsidian_cross_crop_sticks"));
+		event.register(ModelResourceLocation.standalone(ResourceLocation.parse("agricraft:block/wooden_crop_sticks")));
+		event.register(ModelResourceLocation.standalone(ResourceLocation.parse("agricraft:block/iron_crop_sticks")));
+		event.register(ModelResourceLocation.standalone(ResourceLocation.parse("agricraft:block/obsidian_crop_sticks")));
+		event.register(ModelResourceLocation.standalone(ResourceLocation.parse("agricraft:block/wooden_cross_crop_sticks")));
+		event.register(ModelResourceLocation.standalone(ResourceLocation.parse("agricraft:block/iron_cross_crop_sticks")));
+		event.register(ModelResourceLocation.standalone(ResourceLocation.parse("agricraft:block/obsidian_cross_crop_sticks")));
 	}
 
 	@SubscribeEvent
@@ -76,7 +77,7 @@ public class AgriCraftNeoForgeClient {
 
 	@SubscribeEvent
 	public static void registerGuiOverlays(RegisterGuiLayersEvent event) {
-		event.registerAbove(VanillaGuiLayers.HOTBAR, new ResourceLocation(AgriApi.MOD_ID, "magnifying_glass_info"), (guiGraphics, partialTicks) -> MagnifyingGlassOverlay.renderOverlay(guiGraphics, partialTicks));
+		event.registerAbove(VanillaGuiLayers.HOTBAR, ResourceLocation.fromNamespaceAndPath(AgriApi.MOD_ID, "magnifying_glass_info"), (guiGraphics, deltaTracker) -> MagnifyingGlassOverlay.renderOverlay(guiGraphics, deltaTracker.getGameTimeDeltaPartialTick(false)));
 	}
 
 	@SubscribeEvent

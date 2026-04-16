@@ -6,7 +6,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
@@ -27,10 +27,10 @@ public class MagnifyingHelmetRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public boolean matches(CraftingContainer container, Level level) {
+	public boolean matches(CraftingInput container, Level level) {
 		boolean helmet = false;
 		boolean glass = false;
-		for (int i = 0; i < container.getContainerSize(); i++) {
+		for (int i = 0; i < container.size(); i++) {
 			ItemStack itemStack = container.getItem(i);
 			if (itemStack.getItem() instanceof ArmorItem armorItem && armorItem.getEquipmentSlot() == EquipmentSlot.HEAD && (!itemStack.has(DataComponents.CUSTOM_DATA) || !itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getBoolean("magnifying"))) {
 				if (helmet) {
@@ -51,10 +51,10 @@ public class MagnifyingHelmetRecipe extends CustomRecipe {
 
 	@NotNull
 	@Override
-	public ItemStack assemble(CraftingContainer container, HolderLookup.Provider registries) {
+	public ItemStack assemble(CraftingInput container, HolderLookup.Provider registries) {
 		ItemStack helmet = null;
 		ItemStack glass = null;
-		for (int i = 0; i < container.getContainerSize(); i++) {
+		for (int i = 0; i < container.size(); i++) {
 			ItemStack itemStack = container.getItem(i);
 			if (itemStack.getItem() instanceof ArmorItem armorItem && armorItem.getEquipmentSlot() == EquipmentSlot.HEAD) {
 				helmet = itemStack;

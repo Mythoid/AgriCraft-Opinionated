@@ -28,14 +28,14 @@ public class AgriCraftClient {
 		AgriClientApi.registerPageDrawer(GeneticsPage.ID, new GeneticsPageDrawer());
 		AgriClientApi.registerPageDrawer(PlantPage.ID, new PlantPageDrawer());
 		AgriClientApi.registerPageDrawer(MutationsPage.ID, new MutationPageDrawer());
-		ItemProperties.register(ModItems.TROWEL.get(), new ResourceLocation("agricraft:plant"), (itemStack, clientLevel, livingEntity, i) -> {
+		ItemProperties.register(ModItems.TROWEL.get(), ResourceLocation.parse("agricraft:plant"), (itemStack, clientLevel, livingEntity, i) -> {
 			if (!itemStack.isEmpty() && itemStack.getItem() instanceof TrowelItem trowel && trowel.hasPlant(itemStack)) {
 				return 1;
 			} else {
 				return 0;
 			}
 		});
-		ItemProperties.register(ModItems.SEED_BAG.get(), new ResourceLocation("agricraft:seed_bag"), (itemStack, clientLevel, livingEntity, i) -> {
+		ItemProperties.register(ModItems.SEED_BAG.get(), ResourceLocation.parse("agricraft:seed_bag"), (itemStack, clientLevel, livingEntity, i) -> {
 			if (!itemStack.isEmpty() && itemStack.getItem() instanceof SeedBagItem) {
 				if (SeedBagItem.isFilled(itemStack)) {
 					return 1;

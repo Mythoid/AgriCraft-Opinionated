@@ -62,22 +62,22 @@ public record AgriFertilizerVariant(ExtraCodecs.TagOrElementLocation item, Compo
 		}
 
 		public Builder item(String location) {
-			this.item = new ExtraCodecs.TagOrElementLocation(new ResourceLocation(location), false);
+			this.item = new ExtraCodecs.TagOrElementLocation(ResourceLocation.parse(location), false);
 			return this;
 		}
 
 		public Builder item(String namespace, String path) {
-			this.item = new ExtraCodecs.TagOrElementLocation(new ResourceLocation(namespace, path), false);
+			this.item = new ExtraCodecs.TagOrElementLocation(ResourceLocation.fromNamespaceAndPath(namespace, path), false);
 			return this;
 		}
 
 		public Builder tag(String location) {
-			this.item = new ExtraCodecs.TagOrElementLocation(new ResourceLocation(location), true);
+			this.item = new ExtraCodecs.TagOrElementLocation(ResourceLocation.parse(location), true);
 			return this;
 		}
 
 		public Builder tag(String namespace, String path) {
-			this.item = new ExtraCodecs.TagOrElementLocation(new ResourceLocation(namespace, path), true);
+			this.item = new ExtraCodecs.TagOrElementLocation(ResourceLocation.fromNamespaceAndPath(namespace, path), true);
 			return this;
 		}
 

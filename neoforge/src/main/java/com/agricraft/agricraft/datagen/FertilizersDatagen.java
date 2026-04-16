@@ -14,14 +14,14 @@ public class FertilizersDatagen {
 
 	private static void mc(BootstrapContext<AgriFertilizer> context, String fertilizerId, AgriFertilizer fertilizer) {
 		context.register(
-				ResourceKey.create(AgriApi.AGRIFERTILIZERS, new ResourceLocation("minecraft", fertilizerId)),
+				ResourceKey.create(AgriApi.AGRIFERTILIZERS, ResourceLocation.fromNamespaceAndPath("minecraft", fertilizerId)),
 				fertilizer
 		);
 	}
 
 	private static void mysticalagriculture(BootstrapContext<AgriFertilizer> context, String fertilizerId, AgriFertilizer fertilizer) {
 		context.register(
-				ResourceKey.create(AgriApi.AGRIFERTILIZERS, new ResourceLocation("mysticalagriculture", fertilizerId)),
+				ResourceKey.create(AgriApi.AGRIFERTILIZERS, ResourceLocation.fromNamespaceAndPath("mysticalagriculture", fertilizerId)),
 				fertilizer
 		);
 	}

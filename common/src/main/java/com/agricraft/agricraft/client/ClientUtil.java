@@ -3,11 +3,13 @@ package com.agricraft.agricraft.client;
 import com.agricraft.agricraft.client.gui.JournalScreen;
 import com.agricraft.agricraft.common.block.CropStickVariant;
 import com.agricraft.agricraft.common.item.JournalItem;
+import com.agricraft.agricraft.common.util.PlatformClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.TerrainParticle;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -28,13 +30,13 @@ public class ClientUtil {
 	}
 
 	public static void spawnParticlesForPlant(String plantModelId, LevelAccessor level, BlockState state, BlockPos pos, VoxelShape voxelShape) {
-		BakedModel model = Minecraft.getInstance().getModelManager().bakedRegistry.get(new ResourceLocation(plantModelId));
+		BakedModel model = PlatformClient.get().getStandaloneModel(ResourceLocation.parse(plantModelId));
 		spawnParticlesForShape(model, level, state, pos, voxelShape);
 	}
 
 	public static void spawnParticlesForSticks(CropStickVariant variant, LevelAccessor level, BlockState state, BlockPos pos, VoxelShape voxelShape) {
 		String modelId = getModelForSticks(variant);
-		BakedModel model = Minecraft.getInstance().getModelManager().bakedRegistry.get(new ResourceLocation(modelId));
+		BakedModel model = PlatformClient.get().getStandaloneModel(ResourceLocation.parse(modelId));
 		spawnParticlesForShape(model, level, state, pos, voxelShape);
 	}
 
@@ -43,6 +45,9 @@ public class ClientUtil {
 			return;
 		}
 		TextureAtlasSprite particleIcon = model.getParticleIcon();
+		if (particleIcon == null) {
+			return;
+		}
 
 		voxelShape.forAllBoxes((startX, startY, startZ, endX, endY, endZ) -> {
 			double xBoxes = Math.min(1.0, endX - startX);

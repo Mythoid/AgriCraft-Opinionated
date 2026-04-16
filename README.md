@@ -20,3 +20,5 @@ We also have a [Discord server](https://discord.gg/vyrdwWc) where you can ask fo
 | 1.18    | Unsupported |
 | 1.20.1  | Supported   |
 
+// Null particle texture still shows up when walking on the cropsticks or when trampling crops with cropsticks added.
+// If the can't trample config is true then the farmland should also stay farmland if jumped on, at the moment it turns to dirt just the crop doesn't break.

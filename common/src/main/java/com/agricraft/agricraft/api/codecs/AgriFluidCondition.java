@@ -19,7 +19,7 @@ public record AgriFluidCondition(ExtraCodecs.TagOrElementLocation fluid, List<St
 			Codec.STRING.listOf().comapFlatMap(AgriFluidCondition::readStates, list -> list).optionalFieldOf("states").forGetter(stateCondition -> stateCondition.states.isEmpty() ? Optional.empty() : Optional.of(stateCondition.states))
 	).apply(instance, AgriFluidCondition::new));
 
-	public static final AgriFluidCondition EMPTY = new AgriFluidCondition(new ExtraCodecs.TagOrElementLocation(new ResourceLocation("minecraft", "empty"), false), new ArrayList<>());
+	public static final AgriFluidCondition EMPTY = new AgriFluidCondition(new ExtraCodecs.TagOrElementLocation(ResourceLocation.fromNamespaceAndPath("minecraft", "empty"), false), new ArrayList<>());
 
 	public AgriFluidCondition(ExtraCodecs.TagOrElementLocation block, Optional<List<String>> states) {
 		this(block, states.orElse(new ArrayList<>()));
@@ -44,7 +44,7 @@ public record AgriFluidCondition(ExtraCodecs.TagOrElementLocation fluid, List<St
 
 	public static class Builder {
 
-		ExtraCodecs.TagOrElementLocation item = new ExtraCodecs.TagOrElementLocation(new ResourceLocation("minecraft", "air"), false);
+		ExtraCodecs.TagOrElementLocation item = new ExtraCodecs.TagOrElementLocation(ResourceLocation.fromNamespaceAndPath("minecraft", "air"), false);
 		List<String> states = new ArrayList<>();
 
 		public AgriFluidCondition build() {
@@ -52,22 +52,22 @@ public record AgriFluidCondition(ExtraCodecs.TagOrElementLocation fluid, List<St
 		}
 
 		public Builder fluid(String location) {
-			this.item = new ExtraCodecs.TagOrElementLocation(new ResourceLocation(location), false);
+			this.item = new ExtraCodecs.TagOrElementLocation(ResourceLocation.parse(location), false);
 			return this;
 		}
 
 		public Builder fluid(String namespace, String path) {
-			this.item = new ExtraCodecs.TagOrElementLocation(new ResourceLocation(namespace, path), false);
+			this.item = new ExtraCodecs.TagOrElementLocation(ResourceLocation.fromNamespaceAndPath(namespace, path), false);
 			return this;
 		}
 
 		public Builder tag(String location) {
-			this.item = new ExtraCodecs.TagOrElementLocation(new ResourceLocation(location), true);
+			this.item = new ExtraCodecs.TagOrElementLocation(ResourceLocation.parse(location), true);
 			return this;
 		}
 
 		public Builder tag(String namespace, String path) {
-			this.item = new ExtraCodecs.TagOrElementLocation(new ResourceLocation(namespace, path), true);
+			this.item = new ExtraCodecs.TagOrElementLocation(ResourceLocation.fromNamespaceAndPath(namespace, path), true);
 			return this;
 		}
 

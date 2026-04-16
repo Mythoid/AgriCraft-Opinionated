@@ -28,7 +28,7 @@ public class WeedsDatagen {
 
 	private static void agricraft(BootstrapContext<AgriWeed> context, String weedId, AgriWeed weed) {
 		context.register(
-				ResourceKey.create(AgriApi.AGRIWEEDS, new ResourceLocation(AgriApi.MOD_ID, weedId)),
+				ResourceKey.create(AgriApi.AGRIWEEDS, ResourceLocation.fromNamespaceAndPath(AgriApi.MOD_ID, weedId)),
 				weed
 		);
 	}

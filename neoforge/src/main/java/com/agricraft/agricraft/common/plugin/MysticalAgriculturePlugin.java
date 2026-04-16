@@ -27,7 +27,7 @@ public class MysticalAgriculturePlugin {
 			event.register((stack, tintIndex) -> {
 				String species = AgriSeedItem.getSpecies(stack);
 				if (species != null && !species.equals("agricraft:unknown")) {
-					Crop crop = MysticalAgricultureAPI.getCropRegistry().getCropById(new ResourceLocation(species));
+					Crop crop = MysticalAgricultureAPI.getCropRegistry().getCropById(ResourceLocation.parse(species));
 					if (crop != null && crop.isSeedColored()) {
 						return crop.getSeedColor();
 					}
@@ -44,7 +44,7 @@ public class MysticalAgriculturePlugin {
 				Optional<AgriCrop> optional = AgriApi.getCrop(level, pos);
 				if (optional.isPresent() && optional.get().hasPlant()) {
 					String species = optional.get().getGenome().getSpeciesGene().getTrait();
-					Crop crop = MysticalAgricultureAPI.getCropRegistry().getCropById(new ResourceLocation(species));
+					Crop crop = MysticalAgricultureAPI.getCropRegistry().getCropById(ResourceLocation.parse(species));
 					if (crop != null && crop.isFlowerColored()) {
 						return crop.getFlowerColor();
 					}

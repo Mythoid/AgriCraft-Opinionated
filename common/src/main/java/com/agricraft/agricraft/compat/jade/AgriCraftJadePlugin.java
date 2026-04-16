@@ -30,7 +30,7 @@ public class AgriCraftJadePlugin implements IWailaPlugin {
 
 		public static final CropBlockComponentProvider INSTANCE = new CropBlockComponentProvider();
 
-		private static final ResourceLocation ID = new ResourceLocation(AgriApi.MOD_ID, "crop_block");
+		private static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(AgriApi.MOD_ID, "crop_block");
 
 		private CropBlockComponentProvider() {
 		}
@@ -88,7 +88,7 @@ public class AgriCraftJadePlugin implements IWailaPlugin {
 
 		public static final SoilComponentProvider INSTANCE = new SoilComponentProvider();
 
-		private static final ResourceLocation ID = new ResourceLocation(AgriApi.MOD_ID, "soil");
+		private static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(AgriApi.MOD_ID, "soil");
 
 		private SoilComponentProvider() {
 		}

@@ -87,7 +87,7 @@ public class SeedBagItem extends Item {
 	public static final BagSorter DEFAULT_SORTER = new BagSorter() {
 		@Override
 		public ResourceLocation getId() {
-			return new ResourceLocation("agricraft", "default");
+			return ResourceLocation.fromNamespaceAndPath("agricraft", "default");
 		}
 
 		@Override
@@ -400,7 +400,7 @@ public class SeedBagItem extends Item {
 
 		public StatSorter(AgriStat stat) {
 			this.stat = stat;
-			this.id = new ResourceLocation("agricraft", stat.getId());
+			this.id = ResourceLocation.fromNamespaceAndPath("agricraft", stat.getId());
 		}
 
 		@Override

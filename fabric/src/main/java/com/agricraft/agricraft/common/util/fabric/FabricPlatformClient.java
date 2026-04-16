@@ -3,12 +3,14 @@ package com.agricraft.agricraft.common.util.fabric;
 import com.agricraft.agricraft.common.util.PlatformClient;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.fabricmc.fabric.api.client.model.loading.v1.FabricBakedModelManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
@@ -43,6 +45,11 @@ public class FabricPlatformClient extends PlatformClient {
 		RenderType type = getEntityRenderType(RenderType.cutoutMipped(), true);
 		VertexConsumer consumer = ItemRenderer.getFoilBuffer(buffer, type, true, glint);
 		renderer.renderModelLists(model, stack, packedLight, packedOverlay, poseStack, consumer);
+	}
+
+	@Override
+	public BakedModel getStandaloneModel(ResourceLocation id) {
+		return ((FabricBakedModelManager) Minecraft.getInstance().getModelManager()).getModel(id);
 	}
 
 }

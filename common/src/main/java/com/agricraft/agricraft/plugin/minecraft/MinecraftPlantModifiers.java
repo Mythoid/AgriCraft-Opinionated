@@ -42,7 +42,7 @@ public class MinecraftPlantModifiers {
 		AgriPlantModifierFactoryRegistry.register(BushyPlantModifier.ID, info -> Optional.of(new BushyPlantModifier()));
 		AgriPlantModifierFactoryRegistry.register(ExperiencePlantModifier.ID, info -> Optional.of(new ExperiencePlantModifier()));
 		AgriPlantModifierFactoryRegistry.register(FungusPlantModifier.ID, info -> {
-			Block block = BuiltInRegistries.BLOCK.get(new ResourceLocation(info.value()));
+			Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(info.value()));
 			if (block instanceof FungusBlock fungus) {
 				return Optional.of(new FungusPlantModifier(fungus));
 			}
@@ -51,14 +51,14 @@ public class MinecraftPlantModifiers {
 		AgriPlantModifierFactoryRegistry.register(PoisonPlantModifier.ID, info -> Optional.of(new PoisonPlantModifier()));
 		AgriPlantModifierFactoryRegistry.register(RedstonePlantModifier.ID, info -> Optional.of(new RedstonePlantModifier()));
 		AgriPlantModifierFactoryRegistry.register(SummonPlantModifier.ID, info -> {
-			if (BuiltInRegistries.ENTITY_TYPE.containsKey(new ResourceLocation(info.value()))) {
-				return Optional.of(new SummonPlantModifier(BuiltInRegistries.ENTITY_TYPE.get(new ResourceLocation(info.value()))));
+			if (BuiltInRegistries.ENTITY_TYPE.containsKey(ResourceLocation.parse(info.value()))) {
+				return Optional.of(new SummonPlantModifier(BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.parse(info.value()))));
 			}
 			return Optional.empty();
 		});
 		AgriPlantModifierFactoryRegistry.register(ThornsPlantModifier.ID, info -> Optional.of(new ThornsPlantModifier()));
 		AgriPlantModifierFactoryRegistry.register(TreePlantModifier.ID, info -> {
-			Block block = BuiltInRegistries.BLOCK.get(new ResourceLocation(info.value()));
+			Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(info.value()));
 			if (block instanceof BonemealableBlock sapling) {
 				return Optional.of(new TreePlantModifier(sapling));
 			}

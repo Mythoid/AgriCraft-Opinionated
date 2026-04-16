@@ -26,11 +26,11 @@ public class AgriCraftEmiPlugin implements EmiPlugin {
 	public static final EmiStack WOODEN_CROP_STICK = EmiStack.of(ModItems.WOODEN_CROP_STICKS.get());
 	public static final EmiStack CLIPPER = EmiStack.of(ModItems.CLIPPER.get());
 	public static final EmiStack FARMLAND = EmiStack.of(Items.FARMLAND);
-	public static final EmiTexture TEXTURE = new EmiTexture(new ResourceLocation(AgriApi.MOD_ID, "textures/gui/jei/crop_mutation.png"), 0, 0, 128, 128, 128, 128, 128, 128);
-	public static final EmiRecipeCategory MUTATION_CATEGORY = new EmiRecipeCategory(new ResourceLocation("agricraft", "mutation"), WOODEN_CROP_STICK);
-	public static final EmiRecipeCategory PRODUCE_CATEGORY = new EmiRecipeCategory(new ResourceLocation("agricraft", "produce"), WOODEN_CROP_STICK);
-	public static final EmiRecipeCategory CLIPPING_CATEGORY = new EmiRecipeCategory(new ResourceLocation("agricraft", "clipping"), CLIPPER);
-	public static final EmiRecipeCategory REQUIREMENT_CATEGORY = new EmiRecipeCategory(new ResourceLocation("agricraft", "requirement"), FARMLAND);
+	public static final EmiTexture TEXTURE = new EmiTexture(ResourceLocation.fromNamespaceAndPath(AgriApi.MOD_ID, "textures/gui/jei/crop_mutation.png"), 0, 0, 128, 128, 128, 128, 128, 128);
+	public static final EmiRecipeCategory MUTATION_CATEGORY = new EmiRecipeCategory(ResourceLocation.fromNamespaceAndPath("agricraft", "mutation"), WOODEN_CROP_STICK);
+	public static final EmiRecipeCategory PRODUCE_CATEGORY = new EmiRecipeCategory(ResourceLocation.fromNamespaceAndPath("agricraft", "produce"), WOODEN_CROP_STICK);
+	public static final EmiRecipeCategory CLIPPING_CATEGORY = new EmiRecipeCategory(ResourceLocation.fromNamespaceAndPath("agricraft", "clipping"), CLIPPER);
+	public static final EmiRecipeCategory REQUIREMENT_CATEGORY = new EmiRecipeCategory(ResourceLocation.fromNamespaceAndPath("agricraft", "requirement"), FARMLAND);
 
 	public static final Comparison COMPARE_SEEDS = Comparison.compareData(stack -> {
 		ItemStack itemStack = stack.getItemStack();
@@ -48,7 +48,7 @@ public class AgriCraftEmiPlugin implements EmiPlugin {
 	}
 
 	public static <T> ResourceLocation prefixedId(ResourceKey<T> key, String prefix) {
-		return new ResourceLocation("agricraft", "/" + prefix + "/" + key.location().toString().replace(":", "/"));
+		return ResourceLocation.fromNamespaceAndPath("agricraft", "/" + prefix + "/" + key.location().toString().replace(":", "/"));
 	}
 
 	@Override

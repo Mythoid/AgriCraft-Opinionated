@@ -74,7 +74,7 @@ public class AgriPlant {
 	).apply(instance, AgriPlant::new));
 
 	public static final AgriPlant NO_PLANT = new AgriPlant.Builder().harvest(0).chances(0, 0, 0).build();
-	public static final ResourceLocation UNKNOWN = new ResourceLocation("agricraft:unknown");
+	public static final ResourceLocation UNKNOWN = ResourceLocation.parse("agricraft:unknown");
 
 	private final List<String> mods;
 	private final List<AgriSeed> seeds;
@@ -226,7 +226,7 @@ public class AgriPlant {
 		this.particleEffects.stream()
 				.filter(effect -> effect.allowParticles(stage.index()))
 				.forEach(effect -> {
-					ParticleType<?> particle = Platform.get().getParticleType(new ResourceLocation(effect.particle()));
+					ParticleType<?> particle = Platform.get().getParticleType(ResourceLocation.parse(effect.particle()));
 					if (!(particle instanceof ParticleOptions)) {
 						return;
 					}

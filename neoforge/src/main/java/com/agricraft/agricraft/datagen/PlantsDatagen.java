@@ -285,7 +285,7 @@ public class PlantsDatagen {
 	}
 
 	public static void r(BootstrapContext<AgriPlant> context, String modid, String plantId, AgriPlant plant) {
-		context.register(ResourceKey.create(AgriApi.AGRIPLANTS, new ResourceLocation(modid, plantId)), plant);
+		context.register(ResourceKey.create(AgriApi.AGRIPLANTS, ResourceLocation.fromNamespaceAndPath(modid, plantId)), plant);
 	}
 
 	public static AgriPlant.Builder flower(String product, String clip, AgriSeason... seasons) {
