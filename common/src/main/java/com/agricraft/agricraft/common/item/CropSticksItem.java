@@ -34,13 +34,13 @@ public class CropSticksItem extends BlockItem {
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
 		Level world = context.getLevel();
-		if(world.isClientSide()) {
+		if (world.isClientSide()) {
 			return InteractionResult.PASS;
 		}
 		BlockPos pos = context.getClickedPos().relative(context.getClickedFace());
 		BlockState state = world.getBlockState(pos);
 		if (state.getBlock() instanceof CropBlock) {
-			// if the above block is already a crop, apply crop sticks
+			// if there is already a crop in the target placement position, apply crop sticks there
 			return this.applyToExisting(world, pos, state, context.getPlayer(), context.getHand());
 		}
 		// Delegate to default logic for placement on soil
@@ -49,13 +49,12 @@ public class CropSticksItem extends BlockItem {
 
 	protected InteractionResult applyToExisting(Level world, BlockPos pos, BlockState state, Player player, InteractionHand hand) {
 		InteractionResult result = CropBlock.applyCropSticks(world, pos, state, this.getVariant());
-		if(result == InteractionResult.SUCCESS) {
-			if(player != null) {
+		if (result.consumesAction()) {
+			if (!world.isClientSide() && player != null && !player.isCreative()) {
 				ItemStack stack = player.getItemInHand(hand);
-				if(!player.isCreative()) {
-					stack.shrink(1);
-				}
+				stack.shrink(1);
 			}
+			return InteractionResult.sidedSuccess(world.isClientSide());
 		}
 		return result;
 	}
