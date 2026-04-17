@@ -10,7 +10,7 @@ displayName="AgriCraft"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/agricraft"
 updateJSONURL = "https://raw.githubusercontent.com/AgriCraft/AgriCraft/master/version.json"
 logoFile="logo.png"
-authors="InfinityRaider, Ketheroth"
+authors="InfinityRaider, Ketheroth, coredex-source"
 description='''
 Agricultural farming extended
 '''
@@ -25,7 +25,7 @@ side="BOTH"
 [[dependencies.agricraft]]
 modId = "minecraft"
 type="required"
-versionRange = "[1.20.6,)"
+versionRange = "[1.21,)"
 ordering = "NONE"
 side = "BOTH"
 
