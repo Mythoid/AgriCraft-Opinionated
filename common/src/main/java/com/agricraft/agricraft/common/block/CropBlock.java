@@ -113,7 +113,7 @@ public class CropBlock extends Block implements EntityBlock, BonemealableBlock, 
 		CropState cropState = state.getValue(CROP_STATE);
 		BlockState newState = state;
 		if (cropState == CropState.PLANT) {
-			newState = state.setValue(CROP_STATE, CropState.PLANT_STICKS);
+			newState = state.setValue(CROP_STATE, CropState.PLANT_STICKS).setValue(STICK_VARIANT, variant);
 		} else if (cropState == CropState.SINGLE_STICKS && state.getValue(STICK_VARIANT) == variant) {
 			newState = state.setValue(CROP_STATE, CropState.DOUBLE_STICKS);
 		}

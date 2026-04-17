@@ -1,6 +1,6 @@
 {
 	"ambientocclusion": false,
 	"textures": {
-		"particle": "minecraft:block/beetroots_stage2"
+		"particle": "minecraft:block/oak_planks"
 	}
 }

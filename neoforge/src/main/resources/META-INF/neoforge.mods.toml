@@ -35,3 +35,6 @@ type="required"
 versionRange = "[${resourcefulconfig_version},)"
 ordering = "NONE"
 side = "BOTH"
+
+[[mixins]]
+config = "agricraft-common.mixins.json"
