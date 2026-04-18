@@ -397,7 +397,11 @@ public class CropBlockEntity extends BlockEntity implements AgriCrop, Magnifying
 				} else if (fertility.isLethal()) {
 					this.revertGrowthStage();
 				} else if (fertility.isFertile()) {
-					this.executePlantGrowthTick();
+					// Guarantee growth advancement (no random chance) when fertilized
+					if (!this.isFullyGrown()) {
+						this.setGrowthStage(this.growthStage.getNext(this, this.level.random));
+						this.getPlant().onGrowth(this);
+					}
 				}
 			}
 		} else {
