@@ -22,3 +22,15 @@ We also have a [Discord server](https://discord.gg/vyrdwWc) where you can ask fo
 
 // Null particle texture still shows up when walking on the cropsticks or when trampling crops with cropsticks added.
 // If the can't trample config is true then the farmland should also stay farmland if jumped on, at the moment it turns to dirt just the crop doesn't break.
+
+## Changes
+
+### Implemented
+
+### Todo
+- More growth conditions
+  - Elevation (y-level)
+- Mutation conditions (uses Growth conditions)
+- Compat
+  - Use source from Ars Nouveau (as Growth condition/requirement?, may need to store more attribute in block entity?)
+  - Serene Seasons (add logic)
